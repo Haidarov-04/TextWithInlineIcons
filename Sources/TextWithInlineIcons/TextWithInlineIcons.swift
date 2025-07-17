@@ -11,7 +11,7 @@ public enum AttributedTextElement {
 }
 
 public struct TextWithInlineIcons: UIViewRepresentable {
-    let elements: [AttributedTextElement]
+    public let elements: [AttributedTextElement]
     private var topPadding: CGFloat = 0
     private var bottomPadding: CGFloat = 0
     private var leftPadding: CGFloat = 0
@@ -23,7 +23,7 @@ public struct TextWithInlineIcons: UIViewRepresentable {
     private var imageHeight: CGFloat = 13
     private var fontSize: CGFloat = 13
     
-    init(elements: [AttributedTextElement]) {
+    public init(elements: [AttributedTextElement]) {
         self.elements = elements
     }
     
