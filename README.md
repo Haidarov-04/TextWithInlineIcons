@@ -31,15 +31,16 @@ struct ContentView: View {
     ]
     var body: some View {
         VStack{
-            TextWithInlineIcons(elements: textElements)
-                .paddingTWII(10)
-                .fontSize(20)
-                .imageSize(width: 20, height: 20)
+            TextWithInlineIcons(elements: textElements, textAlignment: .left)
+                 .twiiFontSize(16)
+                 .twiiImageSize(width: 20, height: 20)
         }
+        .padding(30)
         
     }
 }
 
 ```
-<img width="441" height="803" alt="Screenshot 2025-07-17 at 11 37 25" src="https://github.com/user-attachments/assets/266b4f36-5618-41ab-b73d-3ada48460ff5" />
+<img width="414" height="808" alt="Screenshot 2025-07-18 at 13 59 58" src="https://github.com/user-attachments/assets/146ff852-9b47-4ea4-b730-5953dac04cc9" />
+
 
