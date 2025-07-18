@@ -12,36 +12,37 @@ public enum AttributedTextElement {
 
 public struct TextWithInlineIcons: UIViewRepresentable {
     public let elements: [AttributedTextElement]
-    
+    public let textAlignment: NSTextAlignment
     @Environment(\.twiiFontSize) private var fontSize
      @Environment(\.twiiImageWidth) private var imageWidth
      @Environment(\.twiiImageHeight) private var imageHeight
-     @Environment(\.twiiPaddingTop) private var topPadding
-     @Environment(\.twiiPaddingBottom) private var bottomPadding
-     @Environment(\.twiiPaddingLeft) private var leftPadding
-     @Environment(\.twiiPaddingRight) private var rightPadding
-    
     private var maxWidth: CGFloat {
-        return UIScreen.main.bounds.width - self.leftPadding - self.rightPadding
+        return UIScreen.main.bounds.width
     }
     
-    public init(elements: [AttributedTextElement]) {
-        self.elements = elements
-    }
+    public init(elements: [AttributedTextElement], textAlignment: NSTextAlignment = .right) {
+          self.elements = elements
+          self.textAlignment = textAlignment
+      }
     
 
     public func makeUIView(context: Context) -> UITextView {
+        
         let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+       
         textView.isEditable = false
         textView.isScrollEnabled = false
         textView.isUserInteractionEnabled = false
         textView.backgroundColor = .clear
-        textView.textContainerInset = UIEdgeInsets(top: topPadding, left: leftPadding, bottom: bottomPadding, right: rightPadding)
         textView.textContainer.lineFragmentPadding = 0
         textView.textContainer.widthTracksTextView = true
-        textView.textAlignment = .left
+        textView.textAlignment = textAlignment
         textView.setContentHuggingPriority(.required, for: .vertical)
         textView.setContentCompressionResistancePriority(.required, for: .vertical)
+        NSLayoutConstraint.activate([
+                    textView.widthAnchor.constraint(equalToConstant: 100)
+                ])
         return textView
     }
 
@@ -49,7 +50,7 @@ public struct TextWithInlineIcons: UIViewRepresentable {
         let font = UIFont.systemFont(ofSize: fontSize)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping
-        paragraphStyle.alignment = .left
+        paragraphStyle.alignment = textAlignment
 
         let attrs: [NSAttributedString.Key: Any] = [
             .font: font,
@@ -58,6 +59,7 @@ public struct TextWithInlineIcons: UIViewRepresentable {
         ]
 
         let lines = buildLines(elements: elements, font: font, maxWidth: maxWidth)
+        
 
         let result = NSMutableAttributedString()
 
@@ -145,7 +147,7 @@ public struct TextWithInlineIcons: UIViewRepresentable {
 
 // MARK: - Environment Keys
 private struct TWII_FontSizeKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 14
+    static let defaultValue: CGFloat = 16
 }
 private struct TWII_ImageWidthKey: EnvironmentKey {
     static let defaultValue: CGFloat = 16
@@ -153,18 +155,7 @@ private struct TWII_ImageWidthKey: EnvironmentKey {
 private struct TWII_ImageHeightKey: EnvironmentKey {
     static let defaultValue: CGFloat = 16
 }
-private struct TWII_PaddingTopKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 0
-}
-private struct TWII_PaddingBottomKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 0
-}
-private struct TWII_PaddingLeftKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 0
-}
-private struct TWII_PaddingRightKey: EnvironmentKey {
-    static let defaultValue: CGFloat = 0
-}
+
 
 extension EnvironmentValues {
     var twiiFontSize: CGFloat {
@@ -182,25 +173,6 @@ extension EnvironmentValues {
         set { self[TWII_ImageHeightKey.self] = newValue }
     }
 
-    var twiiPaddingTop: CGFloat {
-        get { self[TWII_PaddingTopKey.self] }
-        set { self[TWII_PaddingTopKey.self] = newValue }
-    }
-
-    var twiiPaddingBottom: CGFloat {
-        get { self[TWII_PaddingBottomKey.self] }
-        set { self[TWII_PaddingBottomKey.self] = newValue }
-    }
-
-    var twiiPaddingLeft: CGFloat {
-        get { self[TWII_PaddingLeftKey.self] }
-        set { self[TWII_PaddingLeftKey.self] = newValue }
-    }
-
-    var twiiPaddingRight: CGFloat {
-        get { self[TWII_PaddingRightKey.self] }
-        set { self[TWII_PaddingRightKey.self] = newValue }
-    }
 }
 
 // MARK: - Modifiers
@@ -213,35 +185,5 @@ public extension View {
         self
             .environment(\.twiiImageWidth, width)
             .environment(\.twiiImageHeight, height)
-    }
-
-    func twiiPaddingTop(_ value: CGFloat) -> some View {
-        self.environment(\.twiiPaddingTop, value)
-    }
-
-    func twiiPaddingBottom(_ value: CGFloat) -> some View {
-        self.environment(\.twiiPaddingBottom, value)
-    }
-
-    func twiiPaddingLeft(_ value: CGFloat) -> some View {
-        self.environment(\.twiiPaddingLeft, value)
-    }
-
-    func twiiPaddingRight(_ value: CGFloat) -> some View {
-        self.environment(\.twiiPaddingRight, value)
-    }
-
-    func twiiPadding(_ value: CGFloat) -> some View {
-        self.twiiPaddingTop(value)
-            .twiiPaddingBottom(value)
-            .twiiPaddingLeft(value)
-            .twiiPaddingRight(value)
-    }
-
-    func twiiPadding(horizontal: CGFloat = 0, vertical: CGFloat = 0) -> some View {
-        self.twiiPaddingTop(vertical)
-            .twiiPaddingBottom(vertical)
-            .twiiPaddingLeft(horizontal)
-            .twiiPaddingRight(horizontal)
     }
 }
