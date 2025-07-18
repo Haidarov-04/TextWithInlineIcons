@@ -12,16 +12,18 @@ public enum AttributedTextElement {
 
 public struct TextWithInlineIcons: UIViewRepresentable {
     public let elements: [AttributedTextElement]
-    private var topPadding: CGFloat = 0
-    private var bottomPadding: CGFloat = 0
-    private var leftPadding: CGFloat = 0
-    private var rightPadding: CGFloat = 0
+    
+    @Environment(\.twiiFontSize) private var fontSize
+     @Environment(\.twiiImageWidth) private var imageWidth
+     @Environment(\.twiiImageHeight) private var imageHeight
+     @Environment(\.twiiPaddingTop) private var topPadding
+     @Environment(\.twiiPaddingBottom) private var bottomPadding
+     @Environment(\.twiiPaddingLeft) private var leftPadding
+     @Environment(\.twiiPaddingRight) private var rightPadding
+    
     private var maxWidth: CGFloat {
         return UIScreen.main.bounds.width - self.leftPadding - self.rightPadding
     }
-    private var imageWidth: CGFloat = 13
-    private var imageHeight: CGFloat = 13
-    private var fontSize: CGFloat = 13
     
     public init(elements: [AttributedTextElement]) {
         self.elements = elements
@@ -138,47 +140,6 @@ public struct TextWithInlineIcons: UIViewRepresentable {
     }
 }
 
-public extension TextWithInlineIcons {
-    func fontSize(_ size: CGFloat) -> TextWithInlineIcons {
-        var copy = self
-        copy.fontSize = size
-        return copy
-    }
-
-    func imageSize(width: CGFloat, height: CGFloat) -> TextWithInlineIcons {
-        var copy = self
-        copy.imageWidth = width
-        copy.imageHeight = height
-        return copy
-    }
-
-    func paddingTWII(_ value: CGFloat) -> TextWithInlineIcons {
-        var copy = self
-        copy.topPadding = value
-        copy.bottomPadding = value
-        copy.leftPadding = value
-        copy.rightPadding = value
-        return copy
-    }
-
-    func paddingTWII(horizontal: CGFloat = 0, vertical: CGFloat = 0) -> TextWithInlineIcons {
-        var copy = self
-        copy.leftPadding = horizontal
-        copy.rightPadding = horizontal
-        copy.topPadding = vertical
-        copy.bottomPadding = vertical
-        return copy
-    }
-
-    func paddingTWII(top: CGFloat = 0, bottom: CGFloat = 0, left: CGFloat = 0, right: CGFloat = 0) -> TextWithInlineIcons {
-        var copy = self
-        copy.topPadding = top
-        copy.bottomPadding = bottom
-        copy.leftPadding = left
-        copy.rightPadding = right
-        return copy
-    }
-}
 
 
 
