@@ -84,7 +84,7 @@ public struct TextWithInlineIcons: UIViewRepresentable {
                     result.append(NSAttributedString(string: " ", attributes: attrs))
                 }
             }
-            result.append(NSAttributedString(string: "\n", attributes: attrs))
+//            result.append(NSAttributedString(string: "\n", attributes: attrs))
         }
 
         textView.attributedText = result
