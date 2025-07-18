@@ -179,3 +179,108 @@ public extension TextWithInlineIcons {
         return copy
     }
 }
+
+
+
+// MARK: - Environment Keys
+private struct TWII_FontSizeKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 14
+}
+private struct TWII_ImageWidthKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 16
+}
+private struct TWII_ImageHeightKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 16
+}
+private struct TWII_PaddingTopKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+private struct TWII_PaddingBottomKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+private struct TWII_PaddingLeftKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+private struct TWII_PaddingRightKey: EnvironmentKey {
+    static let defaultValue: CGFloat = 0
+}
+
+extension EnvironmentValues {
+    var twiiFontSize: CGFloat {
+        get { self[TWII_FontSizeKey.self] }
+        set { self[TWII_FontSizeKey.self] = newValue }
+    }
+
+    var twiiImageWidth: CGFloat {
+        get { self[TWII_ImageWidthKey.self] }
+        set { self[TWII_ImageWidthKey.self] = newValue }
+    }
+
+    var twiiImageHeight: CGFloat {
+        get { self[TWII_ImageHeightKey.self] }
+        set { self[TWII_ImageHeightKey.self] = newValue }
+    }
+
+    var twiiPaddingTop: CGFloat {
+        get { self[TWII_PaddingTopKey.self] }
+        set { self[TWII_PaddingTopKey.self] = newValue }
+    }
+
+    var twiiPaddingBottom: CGFloat {
+        get { self[TWII_PaddingBottomKey.self] }
+        set { self[TWII_PaddingBottomKey.self] = newValue }
+    }
+
+    var twiiPaddingLeft: CGFloat {
+        get { self[TWII_PaddingLeftKey.self] }
+        set { self[TWII_PaddingLeftKey.self] = newValue }
+    }
+
+    var twiiPaddingRight: CGFloat {
+        get { self[TWII_PaddingRightKey.self] }
+        set { self[TWII_PaddingRightKey.self] = newValue }
+    }
+}
+
+// MARK: - Modifiers
+public extension View {
+    func twiiFontSize(_ size: CGFloat) -> some View {
+        self.environment(\.twiiFontSize, size)
+    }
+
+    func twiiImageSize(width: CGFloat, height: CGFloat) -> some View {
+        self
+            .environment(\.twiiImageWidth, width)
+            .environment(\.twiiImageHeight, height)
+    }
+
+    func twiiPaddingTop(_ value: CGFloat) -> some View {
+        self.environment(\.twiiPaddingTop, value)
+    }
+
+    func twiiPaddingBottom(_ value: CGFloat) -> some View {
+        self.environment(\.twiiPaddingBottom, value)
+    }
+
+    func twiiPaddingLeft(_ value: CGFloat) -> some View {
+        self.environment(\.twiiPaddingLeft, value)
+    }
+
+    func twiiPaddingRight(_ value: CGFloat) -> some View {
+        self.environment(\.twiiPaddingRight, value)
+    }
+
+    func twiiPadding(_ value: CGFloat) -> some View {
+        self.twiiPaddingTop(value)
+            .twiiPaddingBottom(value)
+            .twiiPaddingLeft(value)
+            .twiiPaddingRight(value)
+    }
+
+    func twiiPadding(horizontal: CGFloat = 0, vertical: CGFloat = 0) -> some View {
+        self.twiiPaddingTop(vertical)
+            .twiiPaddingBottom(vertical)
+            .twiiPaddingLeft(horizontal)
+            .twiiPaddingRight(horizontal)
+    }
+}
